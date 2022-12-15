@@ -12,5 +12,6 @@ using FoodieBlog.Models;
         {
         }
 
-        public DbSet<FoodieBlog.Models.Recipe> Recipe { get; set; }
-    }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<RecipeItem> RecipeItems { get; set; }
+}

@@ -21,7 +21,7 @@ namespace RazorPageFoodie.Controllers
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recipe.ToListAsync());
+            return View(await _context.Recipes.ToListAsync());
         }
 
         // GET: Recipes/Details/5
@@ -32,7 +32,7 @@ namespace RazorPageFoodie.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe
+            var recipe = await _context.Recipes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipe == null)
             {
@@ -72,7 +72,7 @@ namespace RazorPageFoodie.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe.FindAsync(id);
+            var recipe = await _context.Recipes.FindAsync(id);
             if (recipe == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace RazorPageFoodie.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe
+            var recipe = await _context.Recipes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipe == null)
             {
@@ -138,15 +138,15 @@ namespace RazorPageFoodie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipe = await _context.Recipe.FindAsync(id);
-            _context.Recipe.Remove(recipe);
+            var recipe = await _context.Recipes.FindAsync(id);
+            _context.Recipes.Remove(recipe);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RecipeExists(int id)
         {
-            return _context.Recipe.Any(e => e.Id == id);
+            return _context.Recipes.Any(e => e.Id == id);
         }
     }
 }
