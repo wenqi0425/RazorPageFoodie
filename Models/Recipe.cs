@@ -23,6 +23,6 @@ namespace FoodieBlog.Models
         public string? Introduction { get; set; }
 
         [Display(Name = "Image:")]
-        public byte[]? FoodImageData { get; set; }        
+        public byte[]? ImageData { get; set; }        
     }
 }

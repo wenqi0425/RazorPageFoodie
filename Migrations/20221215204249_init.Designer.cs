@@ -31,7 +31,7 @@ namespace RazorPageFoodie.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("FoodImageData")
+                    b.Property<byte[]>("ImageData")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Introduction")

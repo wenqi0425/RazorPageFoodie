@@ -53,7 +53,7 @@ namespace RazorPageFoodie.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CookingSteps,Introduction,FoodImageData")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name,CookingSteps,Introduction,ImageData")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace RazorPageFoodie.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingSteps,Introduction,FoodImageData")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingSteps,Introduction,ImageData")] Recipe recipe)
         {
             if (id != recipe.Id)
             {
