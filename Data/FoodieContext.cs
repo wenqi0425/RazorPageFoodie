@@ -15,5 +15,47 @@ public class FoodieContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Recipe>()
+            .HasData(
+            new Recipe
+            {
+                Id = 1,
+                Name = "Shiitake and Pak Choi with Østerssauce",
+                CookingSteps = "1) Wash Shiitake and Pak Choi." + "\n" + "2) Fry Shiitake with Østerssauce." + "\n" + "3) Fry Pak Choi together." + "\n" + "Done!",
+                Introduction = "It is a deliouse dish and easily to make."
+            }
+            );
+
+
+        builder.Entity<RecipeItem>()
+                .HasData(
+               new RecipeItem
+               {
+                   Id = 1,
+                   Name = "Shiitake",
+                   Amount = "50g",
+                   RecipeId = 1,
+               },
+
+                new RecipeItem
+                {
+                    Id = 2,
+                    Name = "Pak Choi",
+                    Amount = "200g",
+                    RecipeId = 1,
+                },
+
+                new RecipeItem
+                {
+                    Id = 3,
+                    Name = "Østerssauce",
+                    Amount = "20g",
+                    RecipeId = 1,
+                });
+    }
 
 }
