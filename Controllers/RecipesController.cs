@@ -113,9 +113,27 @@ namespace RazorPageFoodie.Controllers
             {
                 try
                 {
-                    _context.Update(recipe);
-                    await _context.SaveChangesAsync();
+                    //recipe = RecipeData;
+
+                    byte[] bytes = null;
+
+                    if (RecipeData.ImageFile != null)
+                    {
+                        using (Stream s = RecipeData.ImageFile.OpenReadStream())
+                        {
+                            using (BinaryReader r = new BinaryReader(s))
+                            {
+                                bytes = r.ReadBytes((Int32)s.Length);
+                            }
+                        }
+
+                        RecipeData.ImageData = Convert.ToBase64String(bytes, 0, bytes.Length);
+                    }
+
+                    _context.Update(RecipeData);
+                    _context.SaveChanges();
                 }
+
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!RecipeExists(recipe.Id))
@@ -127,9 +145,8 @@ namespace RazorPageFoodie.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(recipe);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Recipes/Delete/5
