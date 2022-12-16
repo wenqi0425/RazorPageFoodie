@@ -30,7 +30,6 @@ public class FoodieContext : DbContext
             }
             );
 
-
         builder.Entity<RecipeItem>()
                 .HasData(
                new RecipeItem
