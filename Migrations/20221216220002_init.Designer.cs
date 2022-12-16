@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace RazorPageFoodie.Migrations
 {
     [DbContext(typeof(FoodieContext))]
-    [Migration("20221215204249_init")]
+    [Migration("20221216220002_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,18 @@ namespace RazorPageFoodie.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Recipes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CookingSteps = @"1) Wash Shiitake and Pak Choi.
+2) Fry Shiitake with Østerssauce.
+3) Fry Pak Choi together.
+Done!",
+                            Introduction = "It is a deliouse dish and easily to make.",
+                            Name = "Shiitake and Pak Choi with Østerssauce"
+                        });
                 });
 
             modelBuilder.Entity("FoodieBlog.Models.RecipeItem", b =>
@@ -69,6 +81,29 @@ namespace RazorPageFoodie.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = "50g",
+                            Name = "Shiitake",
+                            RecipeId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = "200g",
+                            Name = "Pak Choi",
+                            RecipeId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Amount = "20g",
+                            Name = "Østerssauce",
+                            RecipeId = 1
+                        });
                 });
 
             modelBuilder.Entity("FoodieBlog.Models.RecipeItem", b =>
