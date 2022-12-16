@@ -26,6 +26,7 @@ namespace RazorPageFoodie
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddRazorPages();
 
             services.AddDbContext<FoodieContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("FoodieContext")));

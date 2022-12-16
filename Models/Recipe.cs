@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
@@ -23,6 +26,9 @@ namespace FoodieBlog.Models
         public string? Introduction { get; set; }
 
         [Display(Name = "Image:")]
-        public byte[]? ImageData { get; set; }        
+        public string ImageData { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
     }
 }

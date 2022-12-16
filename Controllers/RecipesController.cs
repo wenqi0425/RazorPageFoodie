@@ -6,12 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FoodieBlog.Models;
+using System.IO;
 
 namespace RazorPageFoodie.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly FoodieContext _context;
+
+        [BindProperty]
+        public Recipe RecipeData { get; set; }
 
         public RecipesController(FoodieContext context)
         {
@@ -55,13 +59,26 @@ namespace RazorPageFoodie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,CookingSteps,Introduction,ImageData")] Recipe recipe)
         {
-            if (ModelState.IsValid)
+            byte[] bytes = null;
+
+            if (RecipeData.ImageFile != null)
             {
-                _context.Add(recipe);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                using (Stream s = RecipeData.ImageFile.OpenReadStream())
+                {
+                    using (BinaryReader r = new BinaryReader(s))
+                    {
+                        bytes = r.ReadBytes((Int32)s.Length);
+                    }
+                }
+
+                RecipeData.ImageData = Convert.ToBase64String(bytes, 0, bytes.Length);
             }
-            return View(recipe);
+
+            _context.Recipes.Add(RecipeData);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+
+            //return View(recipe);
         }
 
         // GET: Recipes/Edit/5
