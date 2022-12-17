@@ -77,8 +77,6 @@ namespace RazorPageFoodie.Controllers
             _context.Recipes.Add(RecipeData);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
-
-            //return View(recipe);
         }
 
         // GET: Recipes/Edit/5
@@ -113,8 +111,6 @@ namespace RazorPageFoodie.Controllers
             {
                 try
                 {
-                    //recipe = RecipeData;
-
                     byte[] bytes = null;
 
                     if (RecipeData.ImageFile != null)

@@ -31,10 +31,8 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImageData)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageData)
-        </dd>
-    </dl>
+        <img src="data:image/jpg;base64,@Model.ImageData" width="150px" height="100px"></img>
+    </dl>    
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
