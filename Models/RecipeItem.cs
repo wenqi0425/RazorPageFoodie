@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
-namespace FoodieBlog.Models
+namespace RazorPageFoodie.Models
 {
     public class RecipeItem
     {

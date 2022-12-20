@@ -20,6 +20,25 @@ namespace RazorPageFoodie.Controllers
             _logger = logger;
         }
 
+        /*
+        [BindProperty]
+        public RideCriteriaInputModel RideCriteria { get; set; } = new RideCriteriaInputModel();
+
+        public IndexModel(ILogger<IndexModel> logger, IRideService service)
+        {
+            _logger = logger;
+        }
+
+        public void OnGet()
+        {
+            RideCriteria.StartTime = DateTime.Now;
+        }
+
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("/Rides/GetRides", RideCriteria);
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -34,6 +53,6 @@ namespace RazorPageFoodie.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }*/
     }
 }

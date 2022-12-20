@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RazorPageFoodie.Migrations
 {
@@ -16,7 +15,7 @@ namespace RazorPageFoodie.Migrations
                     Name = table.Column<string>(nullable: false),
                     CookingSteps = table.Column<string>(nullable: false),
                     Introduction = table.Column<string>(nullable: true),
-                    ImageData = table.Column<byte[]>(nullable: true)
+                    ImageData = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,29 +42,6 @@ namespace RazorPageFoodie.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Recipes",
-                columns: new[] { "Id", "CookingSteps", "ImageData", "Introduction", "Name" },
-                values: new object[] { 1, @"1) Wash Shiitake and Pak Choi.
-2) Fry Shiitake with Østerssauce.
-3) Fry Pak Choi together.
-Done!", null, "It is a deliouse dish and easily to make.", "Shiitake and Pak Choi with Østerssauce" });
-
-            migrationBuilder.InsertData(
-                table: "RecipeItems",
-                columns: new[] { "Id", "Amount", "Name", "RecipeId" },
-                values: new object[] { 1, "50g", "Shiitake", 1 });
-
-            migrationBuilder.InsertData(
-                table: "RecipeItems",
-                columns: new[] { "Id", "Amount", "Name", "RecipeId" },
-                values: new object[] { 2, "200g", "Pak Choi", 1 });
-
-            migrationBuilder.InsertData(
-                table: "RecipeItems",
-                columns: new[] { "Id", "Amount", "Name", "RecipeId" },
-                values: new object[] { 3, "20g", "Østerssauce", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeItems_RecipeId",

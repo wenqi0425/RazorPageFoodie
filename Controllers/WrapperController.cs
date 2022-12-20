@@ -1,74 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using RazorPageFoodie.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RazorPageFoodie.Models;
 using System.IO;
-using System.Web;
+using System;
+using System.Linq;
 
 namespace RazorPageFoodie.Controllers
 {
-    public class RecipesController : Controller
+    public class WrapperController : Controller
     {
         private readonly FoodieContext _context;
 
         [BindProperty]
-        public Recipe RecipeData { get; set; }
-        public RecipeItem RecipeItemData { get; set; }
         public Wrapper WrapperData { get; set; }
 
-        public RecipesController(FoodieContext context)
+        
+        public WrapperController(FoodieContext context)
         {
             _context = context;
         }
 
-        // GET: Recipes
-        public async Task<IActionResult> Index(string recipeName)
+        public IActionResult Index()
         {
-            if (recipeName == null)
-            {
-                var recipe = await _context.Recipes.FindAsync(recipeName);
-            }
-
-            return View(await _context.Recipes.ToListAsync());
+            var wrapper = new Wrapper();
+            //var recipe = new Recipe();
+            wrapper.Recipe = new Recipe();
+            wrapper.RecipeItem = new RecipeItem();
+            return View(wrapper);
         }
 
-        // GET: Recipes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recipe = await _context.Recipes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return View(recipe);
-        }
-
-        // GET: Recipes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Recipes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Wrapper wrapper)
         {
             wrapper.Recipe = new Recipe();
             wrapper.RecipeItem = new RecipeItem();
+
+            byte[] bytes = null;
+
+            if (WrapperData.Recipe.ImageFile != null)
+            {
+                using (Stream s = WrapperData.Recipe.ImageFile.OpenReadStream())
+                {
+                    using (BinaryReader r = new BinaryReader(s))
+                    {
+                        bytes = r.ReadBytes((Int32)s.Length);
+                    }
+                }
+
+                WrapperData.Recipe.ImageData = Convert.ToBase64String(bytes, 0, bytes.Length);
+            }
+
+            wrapper.RecipeItem.RecipeId = wrapper.Recipe.Id;
+
+            _context.Recipes.Add(WrapperData.Recipe);
+            _context.RecipeItems.Add(WrapperData.RecipeItem);
+            _context.SaveChanges();
+            return View(wrapper);
+        }
+
+        
+
+        /*
+        public async Task<IActionResult> Details(int? recipeId)
+        {
+            var wrapper = new Wrapper();
+            if (recipeId == null)
+            {
+                return NotFound();
+            }
+
+            var recipe = await _context.Recipes
+                .FirstOrDefaultAsync(m => m.Id == recipeId);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            var recipeItem = await _context.RecipeItems
+                .FirstOrDefaultAsync(item => item.RecipeId == recipeId);
+
+            return View(wrapper);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Wrapper/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,List<RecipeItem>,CookingSteps,Introduction,ImageData")] Recipe recipe)
+        {
             byte[] bytes = null;
 
             if (WrapperData.Recipe.ImageFile != null)
@@ -85,12 +115,12 @@ namespace RazorPageFoodie.Controllers
             }
 
             _context.Recipes.Add(WrapperData.Recipe);
-            _context.RecipeItems.Add(WrapperData.RecipeItem);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Recipes/Edit/5
+        
+        // GET: Wrapper/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -106,12 +136,13 @@ namespace RazorPageFoodie.Controllers
             return View(recipe);
         }
 
-        // POST: Recipes/Edit/5
+        
+        // POST: Wrapper/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingSteps,Introduction,ImageData")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,List<RecipeItem>,CookingSteps,Introduction,ImageData")] Recipe recipe)
         {
             if (id != recipe.Id)
             {
@@ -124,9 +155,9 @@ namespace RazorPageFoodie.Controllers
                 {
                     byte[] bytes = null;
 
-                    if (RecipeData.ImageFile != null)
+                    if (WrapperData.Recipe.ImageFile != null)
                     {
-                        using (Stream s = RecipeData.ImageFile.OpenReadStream())
+                        using (Stream s = WrapperData.Recipe.ImageFile.OpenReadStream())
                         {
                             using (BinaryReader r = new BinaryReader(s))
                             {
@@ -134,10 +165,10 @@ namespace RazorPageFoodie.Controllers
                             }
                         }
 
-                        RecipeData.ImageData = Convert.ToBase64String(bytes, 0, bytes.Length);
+                        WrapperData.Recipe.ImageData = Convert.ToBase64String(bytes, 0, bytes.Length);
                     }
 
-                    _context.Update(RecipeData);
+                    _context.Update(WrapperData.Recipe);
                     _context.SaveChanges();
                 }
 
@@ -173,7 +204,7 @@ namespace RazorPageFoodie.Controllers
 
             return View(recipe);
         }
-
+        
         // POST: Recipes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -188,6 +219,6 @@ namespace RazorPageFoodie.Controllers
         private bool RecipeExists(int id)
         {
             return _context.Recipes.Any(e => e.Id == id);
-        }
+        }*/
     }
 }

@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
 
-namespace FoodieBlog.Models
+namespace RazorPageFoodie.Models
 {
     public class Recipe
     {
@@ -19,8 +19,12 @@ namespace FoodieBlog.Models
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Recipe Items:")]
+        public ICollection<RecipeItem> RecipeItems { get; set; }
+
+        [Required]
         [Display(Name = "Cooking Steps:")]
-        public string CookingSteps { get; set; }
+        public string CookingSteps { get; set; }        
 
         [Display(Name = "Introduction:")]
         public string? Introduction { get; set; }
@@ -29,6 +33,6 @@ namespace FoodieBlog.Models
         public string ImageData { get; set; }
 
         [NotMapped]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile ImageFile { get; set; }     
     }
 }
